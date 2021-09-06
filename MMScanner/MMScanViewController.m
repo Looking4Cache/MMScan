@@ -67,11 +67,11 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
     
     [self config];
     [self configScanDevide];
-    [self configTitle];
-    [self configFlashBtn];
+    // [self configTitle];
+    // [self configFlashBtn];
     [self configScanView];
     [self configScanType];
-    [self setNavItem:self.scanType];
+    // [self setNavItem:self.scanType];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,7 +94,7 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
 
 //配置页面显示相关
 - (void)config {
-    self.title = @"扫一扫";
+    // self.title = @"扫一扫";
     self.view.backgroundColor = [UIColor blackColor];
     
     _delayQRAction = NO;
@@ -490,10 +490,10 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
 
 /// 展示相机相册权限弹窗
 - (void)showAuthMessage:(BOOL)camera {
-    NSString *typeStr = camera ? @"相机": @"相册";
-    NSString *tipMessage = [NSString stringWithFormat:@"请到手机系统的\n【设置】->【隐私】->【%@】\n对\"%@\"开启%@的访问权限",typeStr,self.appName,typeStr];
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"相机权限未开启" message:tipMessage preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"去设置" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSString *tipTitle = NSLocalizedString(@"onboarding.camerapermission.title", nil);
+    NSString *tipMessage = NSLocalizedString(@"onboarding.camerapermission.message", nil);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:tipTitle message:tipMessage preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"onboarding.camerapermission.open", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (@available(iOS 10.0, *)) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:NULL];
         } else {
@@ -501,7 +501,7 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
         }
     }];
-    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"common.cancel", nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self.navigationController popViewControllerAnimated:YES];
     }];
     
@@ -513,13 +513,13 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
 
 #pragma mark - Error handle
 - (void)showError:(NSString*)str {
-    [self showError:str andTitle:@"提示"];
+    [self showError:str andTitle:NSLocalizedString(@"common.error", nil)];
 }
 
 - (void)showError:(NSString*)str andTitle:(NSString *)title {
     [self.session stopRunning];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:str preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *action = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *action = [UIAlertAction actionWithTitle:NSLocalizedString(@"common.ok", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.session startRunning];
     }];
     
@@ -551,7 +551,7 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
             finish(scanResult);
         }
     } else {
-        [self showError:@"图片中未识别到二维码"];
+        [self showError:NSLocalizedString(@"common.error", nil)];
     }
 }
 #pragma mark - 创建二维码/条形码
